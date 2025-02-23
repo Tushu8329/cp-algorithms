@@ -101,13 +101,29 @@ On the left there is a tree, and on the right side there is the compressed tree 
 ![Path compression of call find_set(7)](DSU_path_compression.png)
 
 The new implementation of `find_set` is as follows:
-
+1 Recursively:
 ```cpp
 int find_set(int v) {
     if (v == parent[v])
         return v;
     return parent[v] = find_set(parent[v]);
 }
+```
+2 Iterative:
+```cpp
+int find(int x) {
+        int root = x;
+        while (root != parent[root]) {
+            root = parent[root];
+        }
+        // Path compression: Make all nodes in the path point to root
+        while (x != root) {
+            int next = parent[x];
+            parent[x] = root;
+            x = next;
+        }
+        return root;
+    }
 ```
 
 The simple implementation does what was intended:
